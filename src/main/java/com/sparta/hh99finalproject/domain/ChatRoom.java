@@ -17,7 +17,6 @@ public class ChatRoom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-
-
+    @OneToMany(mappedBy = "chatroom")
+    private List<ChatMessage> chatMessages = new ArrayList<>();
 }
