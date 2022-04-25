@@ -5,7 +5,7 @@ import com.sparta.hh99finalproject.domain.ChatRoom;
 import com.sparta.hh99finalproject.domain.ChatRoomUser;
 import com.sparta.hh99finalproject.domain.User;
 import com.sparta.hh99finalproject.dto.ChatRoomResponseDto;
-import com.sparta.hh99finalproject.dto.ChatRoomUserRequestDto;
+import com.sparta.hh99finalproject.dto.request.ChatRoomUserRequestDto;
 import com.sparta.hh99finalproject.repository.ChatMessageRepository;
 import com.sparta.hh99finalproject.repository.ChatRoomRepository;
 import com.sparta.hh99finalproject.repository.ChatRoomUserRepository;

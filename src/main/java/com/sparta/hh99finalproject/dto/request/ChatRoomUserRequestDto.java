@@ -1,4 +1,4 @@
-package com.sparta.hh99finalproject.dto;
+package com.sparta.hh99finalproject.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

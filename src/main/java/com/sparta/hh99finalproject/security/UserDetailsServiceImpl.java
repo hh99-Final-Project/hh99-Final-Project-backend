@@ -1,7 +1,5 @@
 package com.sparta.hh99finalproject.security;
 
-
-
 import com.sparta.hh99finalproject.domain.User;
 import com.sparta.hh99finalproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Can't find " + username));
+        System.out.println(user.getUsername());
 
         return new UserDetailsImpl(user);
     }

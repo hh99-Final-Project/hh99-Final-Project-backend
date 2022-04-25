@@ -1,7 +1,7 @@
 package com.sparta.hh99finalproject.controller;
 
 import com.sparta.hh99finalproject.dto.ChatRoomResponseDto;
-import com.sparta.hh99finalproject.dto.ChatRoomUserRequestDto;
+import com.sparta.hh99finalproject.dto.request.ChatRoomUserRequestDto;
 import com.sparta.hh99finalproject.security.UserDetailsImpl;
 import com.sparta.hh99finalproject.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;

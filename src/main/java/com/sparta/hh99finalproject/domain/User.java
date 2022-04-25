@@ -5,11 +5,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-@Getter
+import lombok.Setter;
+
 @Entity
 @NoArgsConstructor
+@Getter
+@Setter
 public class User {
 
     @Id
@@ -22,8 +26,12 @@ public class User {
     // 랜덤 닉네임
     private String nickname;
 
-    // UUID
     private String password;
 
+
+    public User(String email, String password) {
+        this.username = email;
+        this.password = password;
+    }
 
 }
