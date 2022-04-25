@@ -24,7 +24,14 @@ public class User {
     // 랜덤 닉네임
     private String nickname;
 
+    private String password;
+
     public User(String email) {
         this.username = email;
+    }
+
+    public User(String email, String password) {
+        this.username = email;
+        this.password = password;
     }
 }
