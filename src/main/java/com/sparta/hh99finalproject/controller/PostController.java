@@ -21,7 +21,12 @@ public class PostController {
 
     // 게시글 저장
     @PostMapping("/api/posts")
-    public void create(@RequestBody PostCreateRequestDto postCreateRequestDto) {
+    public void create(@RequestBody PostCreateRequestDto postCreateRequestDto,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (userDetails == null) {
+            new IllegalArgumentException("로그인한 사용자만 게시글을 저장할 수 있습니다.");
+        }
+
         postService.create(postCreateRequestDto);
     }
 
@@ -33,8 +38,9 @@ public class PostController {
 
     // 게시글 삭제
     @PostMapping("/api/posts/{postId}")
-    public void delete(@PathVariable Long postId) {
-        postService.delete(postId);
+    public void delete(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        postService.delete(postId, userDetails.getUser());
     }
 
 
