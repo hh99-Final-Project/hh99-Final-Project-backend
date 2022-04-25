@@ -1,5 +1,6 @@
 package com.sparta.hh99finalproject.domain;
 
+import com.sparta.hh99finalproject.dto.request.PostCreateRequestDto;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
@@ -29,4 +30,9 @@ public class Post {
 
     @ManyToOne
     private User user;
+
+    public Post(PostCreateRequestDto postCreateRequestDto) {
+        this.title = postCreateRequestDto.getTitle();
+        this.content = postCreateRequestDto.getContent();
+    }
 }
