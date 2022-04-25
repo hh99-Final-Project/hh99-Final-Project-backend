@@ -4,8 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import lombok.NoArgsConstructor;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+@Getter
 @Entity
 @NoArgsConstructor
 public class User {
@@ -22,4 +24,6 @@ public class User {
 
     // UUID
     private String password;
+
+
 }
