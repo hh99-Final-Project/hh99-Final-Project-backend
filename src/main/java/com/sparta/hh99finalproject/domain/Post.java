@@ -8,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,4 +33,9 @@ public class Post {
 
     @ManyToOne
     private User user;
+
+    public Post(PostCreateRequestDto postCreateRequestDto) {
+        this.title = postCreateRequestDto.getTitle();
+        this.content = postCreateRequestDto.getContent();
+    }
 }

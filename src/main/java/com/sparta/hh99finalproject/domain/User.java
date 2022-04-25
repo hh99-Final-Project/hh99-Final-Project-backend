@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,6 +24,7 @@ public class User {
     // 랜덤 닉네임
     private String nickname;
 
-    // UUID
-    private String password;
+    public User(String email) {
+        this.username = email;
+    }
 }
