@@ -131,6 +131,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("GET,/kakao/login");
         skipPathList.add("GET,/user/kakao/callback");
 
+        // 구글 로그인
+        skipPathList.add("GET,/google/login");
+        skipPathList.add("GET,/google/login/redirect");
 
         // 회원 관리 API 허용
         skipPathList.add("GET,/user/**");
