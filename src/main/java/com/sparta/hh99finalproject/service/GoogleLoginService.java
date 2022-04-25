@@ -74,7 +74,6 @@ public class GoogleLoginService {
     }
 
     private void forceLogin(User googleUser) {
-        // toDO: spring security 가 적용되면 아래 내용 주석 풀기
         UserDetails userDetails = new UserDetailsImpl(googleUser);
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);

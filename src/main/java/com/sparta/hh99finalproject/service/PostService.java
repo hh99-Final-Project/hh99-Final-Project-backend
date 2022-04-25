@@ -58,7 +58,6 @@ public class PostService {
     }
 
     // 게시글(다이어리) 저장
-    // toDO: 로그인한 유저만 게시글 저장 가능
     public void create(PostCreateRequestDto postCreateRequestDto) {
         Post post = new Post(postCreateRequestDto);
         postRepository.save(post);
@@ -66,10 +65,14 @@ public class PostService {
 
     // 게시글(다이어리) 삭제
     // toDO: 게시글 작성자만 게시글을 지울 수 있다.
-    public void delete(Long postId) {
+    public void delete(Long postId, User user) {
         Post post = postRepository.findById(postId).orElseThrow(
             () -> new IllegalArgumentException("존재하지 않는 게시글입니다.")
         );
+
+        if (!user.getId().equals(post.getUser().getId())) {
+            throw new IllegalArgumentException("게시글 작성자 만이 게시글을 삭제할 수 있습니다.");
+        }
 
         postRepository.delete(post);
     }
