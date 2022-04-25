@@ -9,11 +9,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-public class Post {
+@Getter
+public class Post extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
