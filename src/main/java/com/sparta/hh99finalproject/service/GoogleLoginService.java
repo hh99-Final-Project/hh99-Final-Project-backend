@@ -16,6 +16,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import com.sparta.hh99finalproject.security.UserDetailsImpl;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +28,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -37,6 +39,7 @@ public class GoogleLoginService {
 
     private final GoogleConfigUtils configUtils;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     // token을 얻기 위한 code 요청
     public ResponseEntity<Object> requestAuthCodeFromGoogle() {
@@ -82,8 +85,12 @@ public class GoogleLoginService {
 
         if (googleUser == null) {
 
+            // password: random UUID
+            String password = UUID.randomUUID().toString();
+            String encodedPassword = passwordEncoder.encode(password);
+
             // toDo: 랜덤 닉네임 부여
-            googleUser = new User(email);
+            googleUser = new User(email, encodedPassword);
             userRepository.save(googleUser);
         }
         return googleUser;
