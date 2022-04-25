@@ -3,7 +3,6 @@ package com.sparta.hh99finalproject.security;
 import com.sparta.hh99finalproject.domain.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 
 public class UserDetailsImpl implements UserDetails {

@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,8 +28,10 @@ public class User {
 
     private String password;
 
+
     public User(String email, String password) {
         this.username = email;
         this.password = password;
     }
+
 }

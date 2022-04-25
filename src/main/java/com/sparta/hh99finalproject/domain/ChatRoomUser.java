@@ -6,8 +6,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import lombok.NoArgsConstructor;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import com.sparta.hh99finalproject.domain.User;
+
+@Getter
 @Entity
 @NoArgsConstructor
 public class ChatRoomUser {
@@ -24,5 +28,14 @@ public class ChatRoomUser {
     private String name;
 
     @ManyToOne
+    @JoinColumn(name = "chatroom_id")
     private ChatRoom chatRoom;
+
+
+    public ChatRoomUser(User user, User anotherUser, ChatRoom room) {
+
+        this.user = user;
+        this.name = anotherUser.getNickname();
+        this.chatRoom = room;
+    }
 }

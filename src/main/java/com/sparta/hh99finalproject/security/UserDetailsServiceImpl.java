@@ -1,6 +1,5 @@
 package com.sparta.hh99finalproject.security;
 
-
 import com.sparta.hh99finalproject.domain.User;
 import com.sparta.hh99finalproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
