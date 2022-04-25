@@ -8,8 +8,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Entity
 @NoArgsConstructor
 public class Post {
@@ -23,6 +26,8 @@ public class Post {
 
     // 게시글 내용
     private String content;
+
+    private boolean isShow;
 
     @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
