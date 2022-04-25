@@ -14,6 +14,8 @@ import com.sparta.hh99finalproject.dto.response.GoogleLoginResponse;
 import com.sparta.hh99finalproject.repository.UserRepository;
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import com.sparta.hh99finalproject.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +23,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -66,9 +72,9 @@ public class GoogleLoginService {
 
     private void forceLogin(User googleUser) {
         // toDO: spring security 가 적용되면 아래 내용 주석 풀기
-//        UserDetails userDetails = new UserDetailsImpl(kakaoUser);
-//        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserDetails userDetails = new UserDetailsImpl(googleUser);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     private User registerKakaoUserIfNeeded(String email) {

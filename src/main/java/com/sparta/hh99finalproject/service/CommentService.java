@@ -2,8 +2,8 @@ package com.sparta.hh99finalproject.service;
 
 import com.sparta.hh99finalproject.domain.Comment;
 import com.sparta.hh99finalproject.domain.Post;
-import com.sparta.hh99finalproject.dto.CommentRequestDto;
-import com.sparta.hh99finalproject.dto.CommentResponseDto;
+import com.sparta.hh99finalproject.dto.request.CommentRequestDto;
+import com.sparta.hh99finalproject.dto.response.CommentResponseDto;
 import com.sparta.hh99finalproject.repository.CommentRepository;
 import com.sparta.hh99finalproject.repository.PostRepository;
 import com.sparta.hh99finalproject.security.UserDetailsImpl;

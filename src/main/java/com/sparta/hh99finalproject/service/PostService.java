@@ -8,7 +8,6 @@ import com.sparta.hh99finalproject.repository.PostRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,20 +16,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import com.sparta.hh99finalproject.domain.Comment;
-import com.sparta.hh99finalproject.domain.Post;
-import com.sparta.hh99finalproject.domain.User;
 import com.sparta.hh99finalproject.dto.CommentListDto;
-import com.sparta.hh99finalproject.dto.PostDto;
-import com.sparta.hh99finalproject.dto.PostResponseDto;
+import com.sparta.hh99finalproject.dto.response.PostResponseDto;
 import com.sparta.hh99finalproject.repository.CommentRepository;
-import com.sparta.hh99finalproject.repository.PostRepository;
 import com.sparta.hh99finalproject.security.UserDetailsImpl;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +27,12 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    // 내 게시글 한 페이지당 보여줄 게시글의 수
+    private static final int MY_POST_PAGEABLE_SIZE = 1;
+    // 페이지 sort 대상 (id를 기준으로 내림차순으로 sort할 에정임)
+    private static final String SORT_PROPERTIES = "id";
+    // 남의 게시글 한 페이지당 보여줄 게시글의 수 (한 페이지당 보여줄 게시글의 수는 1개이지만 5개를 한번에 보내주기로 함)
+    private static final int OTHER_POST_PAGEABLE_SIZE = 5;
 
     //게시글 1개 상세 조회
     public PostResponseDto getPost(Long postId, UserDetailsImpl userDetails) {
@@ -48,25 +43,19 @@ public class PostService {
 
         List<Comment> newCommentList = new ArrayList<>();
         List<Comment> commentLists = commentRepository.findAllByPost(post1);
-        for(Comment commentList : commentLists){
-            if(commentList.getUser().getId().equals(userDetails.getUser().getId()) || userDetails.getUser().getId().equals(user.getId())){
+        for (Comment commentList : commentLists) {
+            if (commentList.getUser().getId().equals(userDetails.getUser().getId()) || userDetails.getUser().getId().equals(user.getId())) {
                 commentList.setShow(true);
-            }else{
+            } else {
                 commentList.setShow(false);
             }
             newCommentList.add(commentList);
         }
 
-        PostDto postDto = new PostDto(post1);
         CommentListDto commentListDto = new CommentListDto(newCommentList);
 
-        return new PostResponseDto(postDto, commentListDto, userDetails);
-    // 내 게시글 한 페이지당 보여줄 게시글의 수
-    private static final int MY_POST_PAGEABLE_SIZE = 1;
-    // 페이지 sort 대상 (id를 기준으로 내림차순으로 sort할 에정임)
-    private static final String SORT_PROPERTIES = "id";
-    // 남의 게시글 한 페이지당 보여줄 게시글의 수 (한 페이지당 보여줄 게시글의 수는 1개이지만 5개를 한번에 보내주기로 함)
-    private static final int OTHER_POST_PAGEABLE_SIZE = 5;
+        return new PostResponseDto(post1, commentListDto);
+    }
 
     // 게시글(다이어리) 저장
     // toDO: 로그인한 유저만 게시글 저장 가능

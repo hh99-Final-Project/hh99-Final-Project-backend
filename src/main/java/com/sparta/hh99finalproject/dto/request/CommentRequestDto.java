@@ -1,5 +1,6 @@
-package com.sparta.hh99finalproject.dto;
+package com.sparta.hh99finalproject.dto.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,11 +8,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CommentResponseDto {
+@AllArgsConstructor
+public class CommentRequestDto {
 
     private Long postId;
-    private String nickname;
     private String content;
-    private String createdAt;
-    private boolean isShow;
 }

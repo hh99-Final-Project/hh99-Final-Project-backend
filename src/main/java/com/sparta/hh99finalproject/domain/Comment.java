@@ -7,19 +7,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.sparta.hh99finalproject.dto.CommentRequestDto;
+import com.sparta.hh99finalproject.dto.request.CommentRequestDto;
 import com.sparta.hh99finalproject.security.UserDetailsImpl;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.stereotype.Service;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
-public class Comment {
+public class Comment extends Timestamped{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

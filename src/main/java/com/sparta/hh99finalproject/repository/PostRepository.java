@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-
     Long countByUserNot(User user);
 
     Page<Post> findAllByUserNot(User user, PageRequest of);
+
     User findUserById(Long postId);
 }

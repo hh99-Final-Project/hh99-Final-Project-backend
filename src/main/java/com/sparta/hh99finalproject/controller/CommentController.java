@@ -1,7 +1,7 @@
 package com.sparta.hh99finalproject.controller;
 
-import com.sparta.hh99finalproject.dto.CommentRequestDto;
-import com.sparta.hh99finalproject.dto.CommentResponseDto;
+import com.sparta.hh99finalproject.dto.request.CommentRequestDto;
+import com.sparta.hh99finalproject.dto.response.CommentResponseDto;
 import com.sparta.hh99finalproject.security.UserDetailsImpl;
 import com.sparta.hh99finalproject.service.CommentService;
 import lombok.RequiredArgsConstructor;
