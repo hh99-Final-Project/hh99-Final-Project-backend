@@ -53,7 +53,7 @@ public class PostController {
         return postService.findOneMyPage(pageId, userDetails.getUser());
     }
 
-    // 남의 랜덤 게시글 1개 조회
+    // 남의 랜덤 게시글 5개 조회
     @GetMapping("/api/posts")
     public List<PostOtherOnePostResponseDto> getOtherPost(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 

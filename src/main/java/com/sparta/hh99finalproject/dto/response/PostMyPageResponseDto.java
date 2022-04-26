@@ -2,7 +2,11 @@ package com.sparta.hh99finalproject.dto.response;
 
 import com.sparta.hh99finalproject.domain.Post;
 import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class PostMyPageResponseDto {
     private Long postId;
     private String nickname;

@@ -93,6 +93,7 @@ public class PostService {
 
         Page<Post> pagedPosts = postRepository.findByUser(user, pageable);
         List<PostMyPageResponseDto> postDtos = new ArrayList<>();
+
         for (Post pagedPost : pagedPosts) {
             postDtos.add(new PostMyPageResponseDto(pagedPost));
         }
@@ -102,18 +103,26 @@ public class PostService {
 
     public List<PostOtherOnePostResponseDto> findOneOtherPage(User user) {
 
-        Long otherPostsSize = postRepository.countByUserNot(user);
-        int idx = (int)(Math.random() * otherPostsSize);
+        long otherPostsCount = postRepository.countByUserNot(user);
+        if (otherPostsCount >= 1) {
+            return getRandomOtherPosts(user, otherPostsCount);
+        }
 
-        // toDo: 페이징 처리 고려
-        // toDo: 가져올 게시글이 없는 상황 고려
-        // 페이징 처리한 나의 게시글 리스트 들고오기
-         List<Post> posts = postRepository.findAllByUserNot(user);
+        return new ArrayList<>();
+    }
 
-//        List<Post> posts = postPage.getContent();
+    private List<PostOtherOnePostResponseDto> getRandomOtherPosts(User user, long otherPostsCount) {
         List<PostOtherOnePostResponseDto> postDtos = new ArrayList<>();
-        for (Post post : posts) {
-            postDtos.add(new PostOtherOnePostResponseDto(post));
+        for (int i = 0; i < Math.min(OTHER_POST_PAGEABLE_SIZE, otherPostsCount); i++) {
+            int idx = (int)(Math.random() * otherPostsCount);
+            System.out.println("idx = " + idx);
+            Pageable pageable = PageRequest.of(idx, 1);
+            Page<Post> posts = postRepository
+                .findAllByUserNot(
+                    user,
+                    pageable
+                );
+            postDtos.add(new PostOtherOnePostResponseDto(posts.getContent().get(0)));
         }
         return postDtos;
     }
