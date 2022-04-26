@@ -1,6 +1,6 @@
 package com.sparta.hh99finalproject.service;
 
-import com.sparta.hh99finalproject.dto.UserInfoDto;
+import com.sparta.hh99finalproject.dto.response.UserInfoDto;
 import com.sparta.hh99finalproject.repository.UserRepository;
 import com.sparta.hh99finalproject.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;

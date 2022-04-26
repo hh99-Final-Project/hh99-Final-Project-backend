@@ -14,5 +14,5 @@ import java.util.List;
 @NoArgsConstructor
 public class CommentListDto {
 
-    private List<Comment> commentList;
+    private List<CommentDto> commentList;
 }

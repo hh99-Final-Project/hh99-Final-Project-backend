@@ -1,6 +1,6 @@
 package com.sparta.hh99finalproject.controller;
 
-import com.sparta.hh99finalproject.dto.UserInfoDto;
+import com.sparta.hh99finalproject.dto.response.UserInfoDto;
 import com.sparta.hh99finalproject.dto.request.NicknameCheckRequestDto;
 import com.sparta.hh99finalproject.security.UserDetailsImpl;
 import com.sparta.hh99finalproject.service.UserService;

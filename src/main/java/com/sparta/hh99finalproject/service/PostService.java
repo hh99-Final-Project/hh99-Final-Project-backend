@@ -2,6 +2,7 @@ package com.sparta.hh99finalproject.service;
 
 import com.sparta.hh99finalproject.domain.Post;
 import com.sparta.hh99finalproject.domain.User;
+import com.sparta.hh99finalproject.dto.CommentDto;
 import com.sparta.hh99finalproject.dto.request.PostCreateRequestDto;
 import com.sparta.hh99finalproject.dto.response.PostOtherOnePostResponseDto;
 import com.sparta.hh99finalproject.repository.PostRepository;
@@ -42,7 +43,7 @@ public class PostService {
         // 게시글 작성자
         User user = postRepository.findById(postId).get().getUser();
 
-        List<Comment> newCommentList = new ArrayList<>();
+        List<CommentDto> newCommentList = new ArrayList<>();
         List<Comment> commentLists = commentRepository.findAllByPost(post1);
         for (Comment commentList : commentLists) {
             if (commentList.getUser().getId().equals(userDetails.getUser().getId()) || userDetails.getUser().getId().equals(user.getId())) {
@@ -50,8 +51,10 @@ public class PostService {
             } else {
                 commentList.setShow(false);
             }
-            newCommentList.add(commentList);
+            CommentDto commentDto = new CommentDto(commentList);
+            newCommentList.add(commentDto);
         }
+
 
         CommentListDto commentListDto = new CommentListDto(newCommentList);
 

@@ -18,6 +18,8 @@ import java.net.URISyntaxException;
 
 import com.sparta.hh99finalproject.security.UserDetailsImpl;
 import java.util.UUID;
+
+import com.sparta.hh99finalproject.security.jwt.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
