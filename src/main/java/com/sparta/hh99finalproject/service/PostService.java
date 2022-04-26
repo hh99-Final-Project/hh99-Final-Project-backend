@@ -28,7 +28,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     // 내 게시글 한 페이지당 보여줄 게시글의 수
-    private static final int MY_POST_PAGEABLE_SIZE = 1;
+    private static final int MY_POST_PAGEABLE_SIZE = 5;
     // 페이지 sort 대상 (id를 기준으로 내림차순으로 sort할 에정임)
     private static final String SORT_PROPERTIES = "id";
     // 남의 게시글 한 페이지당 보여줄 게시글의 수 (한 페이지당 보여줄 게시글의 수는 1개이지만 5개를 한번에 보내주기로 함)
@@ -39,7 +39,8 @@ public class PostService {
         Optional<Post> post = postRepository.findById(postId);
         Post post1 = post.get();
 
-        User user = postRepository.findUserById(postId);
+        // 게시글 작성자
+        User user = postRepository.findById(postId).get().getUser();
 
         List<Comment> newCommentList = new ArrayList<>();
         List<Comment> commentLists = commentRepository.findAllByPost(post1);
@@ -58,8 +59,8 @@ public class PostService {
     }
 
     // 게시글(다이어리) 저장
-    public void create(PostCreateRequestDto postCreateRequestDto) {
-        Post post = new Post(postCreateRequestDto);
+    public void create(PostCreateRequestDto postCreateRequestDto, User user) {
+        Post post = new Post(postCreateRequestDto, user);
         postRepository.save(post);
     }
 
@@ -77,9 +78,13 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    public Page<Post> findOneMyPage(Integer pageId) {
-        Pageable pageable = PageRequest.of(pageId, MY_POST_PAGEABLE_SIZE, Sort.by((Direction.DESC), SORT_PROPERTIES));
-         return postRepository.findAll(pageable);
+    // 나의 게시글 리스트 조회
+    public void findOneMyPage(Integer pageId, User user) {
+
+        // paging 처리 해야 하는 수 보다 게시글의 수가 적을 경우 고려
+//        int postSize = Math.min(postRepository.findbyUser(user).size(), MY_POST_PAGEABLE_SIZE);
+//        Pageable pageable = PageRequest.of(pageId, postSize, Sort.by((Direction.DESC), SORT_PROPERTIES));
+//         return postRepository.findbyUser(user, pageable);
     }
 
     public List<PostOtherOnePostResponseDto> findOneOtherPage(User user) {
@@ -87,14 +92,13 @@ public class PostService {
         Long otherPostsSize = postRepository.countByUserNot(user);
         int idx = (int)(Math.random() * otherPostsSize);
 
-        // 페이징 처리해서 남의 게시글 중 한개만 뽑아 오기
-        Page<Post> postPage = postRepository
-            .findAllByUserNot(
-                user,
-                PageRequest.of(idx, OTHER_POST_PAGEABLE_SIZE)
-            );
+        // toDo: 페이징 처리 고려
+        // toDo: 가져올 게시글이 없는 상황 고려
+        // 페이징 처리한 나의 게시글 리스트 들고오기
+         List<Post> posts = postRepository
+            .findAllByUserNot(user);
 
-        List<Post> posts = postPage.getContent();
+//        List<Post> posts = postPage.getContent();
         List<PostOtherOnePostResponseDto> postDtos = new ArrayList<>();
         for (Post post : posts) {
             postDtos.add(new PostOtherOnePostResponseDto(post));

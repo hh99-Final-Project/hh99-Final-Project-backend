@@ -9,6 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -19,7 +20,8 @@ public class CommentController {
 
     //댓글 저장
     @PostMapping("/api/comments")
-    public CommentResponseDto saveComment(CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public CommentResponseDto saveComment(@RequestBody CommentRequestDto commentRequestDto,
+        @AuthenticationPrincipal UserDetailsImpl userDetails){
         return commentService.saveComment(commentRequestDto, userDetails);
     }
     //댓글 삭제

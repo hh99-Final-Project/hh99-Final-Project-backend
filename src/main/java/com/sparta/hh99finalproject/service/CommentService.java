@@ -25,6 +25,7 @@ public class CommentService {
 
     //댓글 저장
     public CommentResponseDto saveComment(CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
+
         Optional<Post> post= postRepository.findById(commentRequestDto.getPostId());
         Post post1 = post.get();
         Comment comment = new Comment(commentRequestDto, userDetails, post1);

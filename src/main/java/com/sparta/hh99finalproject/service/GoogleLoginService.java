@@ -12,6 +12,7 @@ import com.sparta.hh99finalproject.dto.request.GoogleLoginDto;
 import com.sparta.hh99finalproject.dto.request.GoogleLoginRequest;
 import com.sparta.hh99finalproject.dto.response.GoogleLoginResponse;
 import com.sparta.hh99finalproject.repository.UserRepository;
+import com.sparta.hh99finalproject.security.jwt.JwtTokenUtils;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -59,13 +60,14 @@ public class GoogleLoginService {
 
     // 얻은 code를 이용하여 token 요청
     // token을 이용하여 사용자 정보 획득
-    public ResponseEntity<GoogleLoginDto> login(String authCode) {
+    public ResponseEntity login(String authCode) {
         // HTTP 통신을 위해 RestTemplate 활용
         try {
             String jwtToken = getAccessToken(authCode);
+            System.out.println("jwtToken = " + jwtToken);
             String email = getGoogleUserInfo(jwtToken);
             User googleUser = registerKakaoUserIfNeeded(email);
-            forceLogin(googleUser);
+            return forceLogin(googleUser);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,10 +75,21 @@ public class GoogleLoginService {
         return ResponseEntity.badRequest().body(null);
     }
 
-    private void forceLogin(User googleUser) {
-        UserDetails userDetails = new UserDetailsImpl(googleUser);
+    private ResponseEntity forceLogin(User googleUser) {
+        UserDetailsImpl userDetails = new UserDetailsImpl(googleUser);
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // Token 생성
+        final String token = JwtTokenUtils.generateJwtToken(userDetails);
+        System.out.println("token = " + token);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("token",token);
+
+        return ResponseEntity.ok()
+            .headers(headers)
+            .body(null);
     }
 
     private User registerKakaoUserIfNeeded(String email) {
