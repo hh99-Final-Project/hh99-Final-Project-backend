@@ -50,7 +50,6 @@ public class ChatRoomService {
         chatRoomUserRepository.save(chatRoomAnotherUser);
     }
 
-
     //이미 방이 존재할 때
     public void existRoom(UserDetailsImpl userDetails,User anotherUser ){
         List<ChatRoomUser> chatRoomUserList = chatRoomUserRepository.findAllByUser(userDetails.getUser());
@@ -62,9 +61,6 @@ public class ChatRoomService {
             }
         }
     }
-
-
-
 
     public List<ChatRoomResponseDto> getChatRoom(UserDetailsImpl userDetails){
         //user로 챗룸 유저를 찾고>>챗룸 유저에서 채팅방을 찾는다

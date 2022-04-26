@@ -4,11 +4,13 @@ import com.sparta.hh99finalproject.domain.Post;
 import com.sparta.hh99finalproject.domain.User;
 import com.sparta.hh99finalproject.dto.CommentDto;
 import com.sparta.hh99finalproject.dto.request.PostCreateRequestDto;
+import com.sparta.hh99finalproject.dto.response.PostMyPageResponseDto;
 import com.sparta.hh99finalproject.dto.response.PostOtherOnePostResponseDto;
 import com.sparta.hh99finalproject.repository.PostRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javafx.geometry.Pos;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -68,12 +70,13 @@ public class PostService {
     }
 
     // 게시글(다이어리) 삭제
-    // toDO: 게시글 작성자만 게시글을 지울 수 있다.
+
     public void delete(Long postId, User user) {
         Post post = postRepository.findById(postId).orElseThrow(
             () -> new IllegalArgumentException("존재하지 않는 게시글입니다.")
         );
 
+        // toDO: 게시글 작성자만 게시글을 지울 수 있다.
         if (!user.getId().equals(post.getUser().getId())) {
             throw new IllegalArgumentException("게시글 작성자 만이 게시글을 삭제할 수 있습니다.");
         }
@@ -82,12 +85,19 @@ public class PostService {
     }
 
     // 나의 게시글 리스트 조회
-    public void findOneMyPage(Integer pageId, User user) {
+    public List<PostMyPageResponseDto> findOneMyPage(Integer pageId, User user) {
 
         // paging 처리 해야 하는 수 보다 게시글의 수가 적을 경우 고려
-//        int postSize = Math.min(postRepository.findbyUser(user).size(), MY_POST_PAGEABLE_SIZE);
-//        Pageable pageable = PageRequest.of(pageId, postSize, Sort.by((Direction.DESC), SORT_PROPERTIES));
-//         return postRepository.findbyUser(user, pageable);
+        int postSize = Math.min(postRepository.findByUser(user).size(), MY_POST_PAGEABLE_SIZE);
+        Pageable pageable = PageRequest.of(pageId, postSize, Sort.by((Direction.DESC), SORT_PROPERTIES));
+
+        Page<Post> pagedPosts = postRepository.findByUser(user, pageable);
+        List<PostMyPageResponseDto> postDtos = new ArrayList<>();
+        for (Post pagedPost : pagedPosts) {
+            postDtos.add(new PostMyPageResponseDto(pagedPost));
+        }
+
+        return postDtos;
     }
 
     public List<PostOtherOnePostResponseDto> findOneOtherPage(User user) {
@@ -98,8 +108,7 @@ public class PostService {
         // toDo: 페이징 처리 고려
         // toDo: 가져올 게시글이 없는 상황 고려
         // 페이징 처리한 나의 게시글 리스트 들고오기
-         List<Post> posts = postRepository
-            .findAllByUserNot(user);
+         List<Post> posts = postRepository.findAllByUserNot(user);
 
 //        List<Post> posts = postPage.getContent();
         List<PostOtherOnePostResponseDto> postDtos = new ArrayList<>();

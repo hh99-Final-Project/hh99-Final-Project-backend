@@ -3,10 +3,12 @@ package com.sparta.hh99finalproject.controller;
 import com.sparta.hh99finalproject.domain.Post;
 import com.sparta.hh99finalproject.domain.User;
 import com.sparta.hh99finalproject.dto.request.PostCreateRequestDto;
+import com.sparta.hh99finalproject.dto.response.PostMyPageResponseDto;
 import com.sparta.hh99finalproject.dto.response.PostResponseDto;
 import com.sparta.hh99finalproject.dto.response.PostOtherOnePostResponseDto;
 import com.sparta.hh99finalproject.security.UserDetailsImpl;
 import com.sparta.hh99finalproject.service.PostService;
+import javafx.geometry.Pos;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -45,10 +47,10 @@ public class PostController {
 
 
     // 나의 게시글 1개 조회 (페이지당 한건, id를 기준으로 내림차순으로 반환)
-    @GetMapping("/api/myposts/{page}")
-    public void getMyPost(@PathVariable Integer pageId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @GetMapping("/api/myposts/{pageId}")
+    public List<PostMyPageResponseDto> getMyPost(@PathVariable Integer pageId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         pageId -= 1;
-        postService.findOneMyPage(pageId, userDetails.getUser());
+        return postService.findOneMyPage(pageId, userDetails.getUser());
     }
 
     // 남의 랜덤 게시글 1개 조회
