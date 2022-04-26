@@ -77,11 +77,20 @@ public class ChatRoomService {
         for(ChatRoomUser chatRoomUser:chatRoomUserList){
             String roomname = chatRoomUser.getName();
             Long roomId = chatRoomUser.getChatRoom().getId();
+            String lastMessage;
+            LocalDateTime lastTime;
             //마지막
             List<ChatMessage> Messages = chatMessageRepository.findAllByChatRoomOrderByCreatedAt(chatRoomUser.getChatRoom());
-            String lastMessage = Messages.get(0).getContent();
-            LocalDateTime lastTime = Messages.get(0).getCreatedAt();
+           //메시지 없을 때 디폴트
+            if(Messages.isEmpty()){
+                lastMessage = "채팅방이 생성 되었습니다.";
+                lastTime = LocalDateTime.now();
+            }
 
+            else {
+                lastMessage = Messages.get(0).getContent();
+                lastTime = Messages.get(0).getCreatedAt();
+            }
             ChatRoomResponseDto responseDto = new ChatRoomResponseDto(roomname, roomId,lastMessage,lastTime);
             responseDtoList.add(responseDto);
             //마지막 메시지 온 시간 순으로 정렬?? 채팅방 생성된 순??
