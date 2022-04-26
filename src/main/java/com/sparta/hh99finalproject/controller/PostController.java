@@ -46,11 +46,11 @@ public class PostController {
 
 
     // 나의 게시글 1개 조회 (페이지당 한건, id를 기준으로 내림차순으로 반환)
-//    @GetMapping("/api/posts/{page}")
-//    public Page<Post> getMyPost(@PathVariable Integer pageId) {
-//        pageId -= 1;
-//        return postService.findOneMyPage(pageId);
-//    }
+    @GetMapping("/api/myposts/{page}")
+    public void getMyPost(@PathVariable Integer pageId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        pageId -= 1;
+        postService.findOneMyPage(pageId, userDetails.getUser());
+    }
 
     // 남의 랜덤 게시글 1개 조회
     @GetMapping("/api/posts")
