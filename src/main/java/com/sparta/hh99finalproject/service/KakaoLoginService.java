@@ -7,6 +7,7 @@ import com.sparta.hh99finalproject.config.KakaoConfigUtils;
 import com.sparta.hh99finalproject.domain.User;
 import com.sparta.hh99finalproject.repository.UserRepository;
 import com.sparta.hh99finalproject.security.UserDetailsImpl;
+import com.sparta.hh99finalproject.security.jwt.JwtTokenUtils;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.UUID;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -50,20 +52,21 @@ public class KakaoLoginService {
     }
 
 //    public ResponseEntity<KakaoLoginDto> login(String authCode) {
-    public void login(String authCode) {
+    public ResponseEntity login(String authCode) {
         // HTTP 통신을 위해 RestTemplate 활용
         try {
             String jwtToken = getAccessToken(authCode);
+            System.out.println("jwtToken = " + jwtToken);
             // 2. "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
             String email = getKakaoUserInfo(jwtToken);
             // 3. "카카오 사용자 정보"로 필요시 회원가입
             User kakaoUser = registerKakaoUserIfNeeded(email);
             // 4. 강제 로그인 처리
-            forceLogin(kakaoUser);
+            return forceLogin(kakaoUser);
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        return ResponseEntity.badRequest().body(null);
+        return ResponseEntity.badRequest().body(null);
     }
 
 
@@ -134,9 +137,24 @@ public class KakaoLoginService {
         return kakaoUser;
     }
 
-    private void forceLogin(User kakaoUser) {
-        UserDetails userDetails = new UserDetailsImpl(kakaoUser);
+    private ResponseEntity forceLogin(User kakaoUser) {
+        UserDetailsImpl userDetails = new UserDetailsImpl(kakaoUser);
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+        System.out.println("user = " + userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+
+        // Token 생성
+        final String token = JwtTokenUtils.generateJwtToken(userDetails);
+        System.out.println("token = " + token);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("token",token);
+
+        return ResponseEntity.ok()
+            .headers(headers)
+            .body(null);
+
     }
 }

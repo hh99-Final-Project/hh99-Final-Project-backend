@@ -39,7 +39,12 @@ public class PostService {
         Optional<Post> post = postRepository.findById(postId);
         Post post1 = post.get();
 
-        User user = postRepository.findUserById(postId);
+        // 게시글 작성자
+
+        User user = postRepository.findById(postId).get().getUser();
+
+        // toDo: 안되는 이유 확인해 볼 예정
+        // User user = postRepository.findUserById(postId);
 
         List<Comment> newCommentList = new ArrayList<>();
         List<Comment> commentLists = commentRepository.findAllByPost(post1);
@@ -58,8 +63,8 @@ public class PostService {
     }
 
     // 게시글(다이어리) 저장
-    public void create(PostCreateRequestDto postCreateRequestDto) {
-        Post post = new Post(postCreateRequestDto);
+    public void create(PostCreateRequestDto postCreateRequestDto, User user) {
+        Post post = new Post(postCreateRequestDto, user);
         postRepository.save(post);
     }
 
@@ -78,6 +83,8 @@ public class PostService {
     }
 
     public Page<Post> findOneMyPage(Integer pageId) {
+        // toDo: 1개에서 여러개로 변경해야하고
+        // toDo: paging 처리해야 하는 수 보다 게시글의 수가 적을 경우 고려
         Pageable pageable = PageRequest.of(pageId, MY_POST_PAGEABLE_SIZE, Sort.by((Direction.DESC), SORT_PROPERTIES));
          return postRepository.findAll(pageable);
     }
@@ -87,14 +94,13 @@ public class PostService {
         Long otherPostsSize = postRepository.countByUserNot(user);
         int idx = (int)(Math.random() * otherPostsSize);
 
+        // toDo: 페이징 처리 고려
+        // toDo: 가져올 게시글이 없는 상황 고려
         // 페이징 처리해서 남의 게시글 중 한개만 뽑아 오기
-        Page<Post> postPage = postRepository
-            .findAllByUserNot(
-                user,
-                PageRequest.of(idx, OTHER_POST_PAGEABLE_SIZE)
-            );
+         List<Post> posts = postRepository
+            .findAllByUserNot(user);
 
-        List<Post> posts = postPage.getContent();
+//        List<Post> posts = postPage.getContent();
         List<PostOtherOnePostResponseDto> postDtos = new ArrayList<>();
         for (Post post : posts) {
             postDtos.add(new PostOtherOnePostResponseDto(post));

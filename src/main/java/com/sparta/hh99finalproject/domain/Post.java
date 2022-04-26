@@ -36,8 +36,9 @@ public class Post extends Timestamped{
     @ManyToOne
     private User user;
 
-    public Post(PostCreateRequestDto postCreateRequestDto) {
+    public Post(PostCreateRequestDto postCreateRequestDto, User user) {
         this.title = postCreateRequestDto.getTitle();
         this.content = postCreateRequestDto.getContent();
+        this.user = user;
     }
 }

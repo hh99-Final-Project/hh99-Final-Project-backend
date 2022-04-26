@@ -21,10 +21,8 @@ public class KakaoLoginController {
 
     @GetMapping(value = "/user/kakao/callback")
 //    public ResponseEntity<KakaoLoginService> redirectKakaoLogin(
-    public void redirectKakaoLogin(
-        @RequestParam(value = "code") String authCode
-    ) {
+    public ResponseEntity redirectKakaoLogin(@RequestParam(value = "code") String authCode) {
         System.out.println("authCode = " + authCode);
-        kakoLoginService.login(authCode);
+        return kakoLoginService.login(authCode);
     }
 }

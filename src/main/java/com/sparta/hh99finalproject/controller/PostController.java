@@ -27,12 +27,13 @@ public class PostController {
             new IllegalArgumentException("로그인한 사용자만 게시글을 저장할 수 있습니다.");
         }
 
-        postService.create(postCreateRequestDto);
+        postService.create(postCreateRequestDto, userDetails.getUser());
     }
 
     //게시글 1개 상세 조회
     @GetMapping("/api/posts/{postId}")
     public PostResponseDto getPost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        System.out.println("게시글 1개 상세 조회 시작");
         return postService.getPost(postId, userDetails);
     }
 
@@ -45,16 +46,16 @@ public class PostController {
 
 
     // 나의 게시글 1개 조회 (페이지당 한건, id를 기준으로 내림차순으로 반환)
-    @GetMapping("/api/posts/{page}")
-    public Page<Post> getMyPost(@PathVariable Integer pageId) {
-        pageId -= 1;
-        return postService.findOneMyPage(pageId);
-    }
+//    @GetMapping("/api/posts/{page}")
+//    public Page<Post> getMyPost(@PathVariable Integer pageId) {
+//        pageId -= 1;
+//        return postService.findOneMyPage(pageId);
+//    }
 
     // 남의 랜덤 게시글 1개 조회
     @GetMapping("/api/posts")
-    public List<PostOtherOnePostResponseDto> getOtherPost() {
-        User user = new User();
-        return postService.findOneOtherPage(user);
+    public List<PostOtherOnePostResponseDto> getOtherPost(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        return postService.findOneOtherPage(userDetails.getUser());
     }
 }
