@@ -4,11 +4,13 @@ import com.sparta.hh99finalproject.dto.ChatRoomResponseDto;
 import com.sparta.hh99finalproject.dto.request.ChatRoomUserRequestDto;
 import com.sparta.hh99finalproject.security.UserDetailsImpl;
 import com.sparta.hh99finalproject.service.ChatRoomService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 
 

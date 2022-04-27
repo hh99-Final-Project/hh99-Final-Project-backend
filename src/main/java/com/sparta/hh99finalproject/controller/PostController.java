@@ -1,20 +1,19 @@
 package com.sparta.hh99finalproject.controller;
 
-import com.sparta.hh99finalproject.domain.Post;
-import com.sparta.hh99finalproject.domain.User;
 import com.sparta.hh99finalproject.dto.request.PostCreateRequestDto;
 import com.sparta.hh99finalproject.dto.response.PostMyPageResponseDto;
-import com.sparta.hh99finalproject.dto.response.PostResponseDto;
 import com.sparta.hh99finalproject.dto.response.PostOtherOnePostResponseDto;
+import com.sparta.hh99finalproject.dto.response.PostResponseDto;
 import com.sparta.hh99finalproject.security.UserDetailsImpl;
 import com.sparta.hh99finalproject.service.PostService;
-import javafx.geometry.Pos;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class PostController {
@@ -31,21 +30,6 @@ public class PostController {
         postService.create(postCreateRequestDto, userDetails.getUser());
     }
 
-    //게시글 1개 상세 조회
-    @GetMapping("/api/posts/{postId}")
-    public PostResponseDto getPost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        System.out.println("게시글 1개 상세 조회 시작");
-        return postService.getPost(postId, userDetails);
-    }
-
-    // 게시글 삭제
-    @PostMapping("/api/posts/{postId}")
-    public void delete(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-
-        postService.delete(postId, userDetails.getUser());
-    }
-
-
     // 나의 게시글 1개 조회 (페이지당 한건, id를 기준으로 내림차순으로 반환)
     @GetMapping("/api/myposts/{pageId}")
     public List<PostMyPageResponseDto> getMyPost(@PathVariable Integer pageId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -58,5 +42,19 @@ public class PostController {
     public List<PostOtherOnePostResponseDto> getOtherPost(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         return postService.findOneOtherPage(userDetails.getUser());
+    }
+
+    //게시글 1개 상세 조회
+    @GetMapping("/api/posts/{postId}")
+    public PostResponseDto getPost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        System.out.println("게시글 1개 상세 조회 시작");
+        return postService.getPost(postId, userDetails);
+    }
+
+    // 게시글 삭제
+    @PostMapping("/api/posts/{postId}")
+    public void delete(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        postService.delete(postId, userDetails.getUser());
     }
 }

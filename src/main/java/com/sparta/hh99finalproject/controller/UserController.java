@@ -1,12 +1,11 @@
 package com.sparta.hh99finalproject.controller;
 
-import com.sparta.hh99finalproject.dto.response.UserInfoDto;
 import com.sparta.hh99finalproject.dto.request.NicknameCheckRequestDto;
+import com.sparta.hh99finalproject.dto.response.UserInfoDto;
 import com.sparta.hh99finalproject.security.UserDetailsImpl;
 import com.sparta.hh99finalproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
