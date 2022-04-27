@@ -37,7 +37,7 @@ public class PostController {
 
     // 남의 랜덤 게시글 5개 조회
     @GetMapping("/api/posts")
-    public List<PostOtherOnePostResponseDto> getOtherPost(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public PostOtherOnePostResponseDto getOtherPost(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         return postService.findOneOtherPage(userDetails.getUser());
     }
@@ -51,7 +51,6 @@ public class PostController {
     // 게시글 삭제
     @DeleteMapping("/api/posts/{postId}")
     public void delete(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-
         postService.delete(postId, userDetails.getUser());
     }
 }
