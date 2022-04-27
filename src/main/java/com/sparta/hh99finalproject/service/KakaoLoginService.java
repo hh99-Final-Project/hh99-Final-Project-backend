@@ -114,6 +114,7 @@ public class KakaoLoginService {
         );
 
         String responseBody = response.getBody();
+        System.out.println(responseBody);
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
         String nickname = jsonNode.get("properties")

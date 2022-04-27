@@ -48,7 +48,8 @@ public class CommentService {
         return commentResponseDto;
     }
     //댓글 삭제
-    public void deleteComment(Long commentId) {
+    public void deleteComment(Long commentId, UserDetailsImpl userDetails) {
+        if(!commentRepository.findById(commentId).get().getUser().equals(userDetails.getUser())) throw new IllegalArgumentException("글을 작성한 유저만 삭제할 수 있습니다.");
         commentRepository.deleteById(commentId);
     }
 }

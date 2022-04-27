@@ -26,7 +26,7 @@ public class CommentController {
     }
     //댓글 삭제
     @DeleteMapping("/api/comments/{commentId}")
-    public void deleteComment(@PathVariable Long commentId){
-        commentService.deleteComment(commentId);
+    public void deleteComment(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        commentService.deleteComment(commentId, userDetails);
     }
 }
