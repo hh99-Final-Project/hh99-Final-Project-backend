@@ -28,11 +28,7 @@ public class NaverUserService {
         String responseBody = get(apiURL,requestHeaders);
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
-        System.out.println(jsonNode);
         String response = jsonNode.get("response").asText();
-        System.out.println(response);
-        System.out.println(responseBody);
-
     }
 
     private static String get(String apiUrl, Map<String, String> requestHeaders){

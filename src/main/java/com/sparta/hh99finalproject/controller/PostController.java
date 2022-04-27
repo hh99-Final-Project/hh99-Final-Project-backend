@@ -47,7 +47,6 @@ public class PostController {
     //게시글 1개 상세 조회
     @GetMapping("/api/posts/{postId}")
     public PostResponseDto getPost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        System.out.println("게시글 1개 상세 조회 시작");
         return postService.getPost(postId, userDetails);
     }
 

@@ -20,7 +20,7 @@ public class PostMyPageResponseDto {
         this.nickname = pagedPost.getUser().getNickname();
         this.userId = pagedPost.getUser().getId();
         this.title = pagedPost.getTitle();
-        this.content = pagedPost.getTitle();
+        this.content = pagedPost.getContent();
         this.createdAt = pagedPost.getCreatedAt();
     }
 }

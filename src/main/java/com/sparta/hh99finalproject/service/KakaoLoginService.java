@@ -60,9 +60,9 @@ public class KakaoLoginService {
             String jwtToken = getAccessToken(authCode);
             System.out.println("jwtToken = " + jwtToken);
             // 2. "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
-            String email = getKakaoUserInfo(jwtToken);
+            String nickname = getKakaoUserInfo(jwtToken);
             // 3. "카카오 사용자 정보"로 필요시 회원가입
-            User kakaoUser = registerKakaoUserIfNeeded(email);
+            User kakaoUser = registerKakaoUserIfNeeded(nickname);
             // 4. 강제 로그인 처리
             return forceLogin(kakaoUser);
         } catch (Exception e) {
@@ -116,15 +116,14 @@ public class KakaoLoginService {
         String responseBody = response.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
-        String email = jsonNode.get("kakao_account")
-            .get("email").asText();
-
-        return email;
+        String nickname = jsonNode.get("properties")
+            .get("nickname").asText();
+        return nickname;
     }
 
-    private User registerKakaoUserIfNeeded(String email) {
+    private User registerKakaoUserIfNeeded(String nickname) {
         // DB 에 중복된 Kakao Id 가 있는지 확인
-        User kakaoUser = userRepository.findByUsername(email)
+        User kakaoUser = userRepository.findByUsername(nickname)
             .orElse(null);
         if (kakaoUser == null) {
             // 회원가입
@@ -133,7 +132,7 @@ public class KakaoLoginService {
             String password = UUID.randomUUID().toString();
             String encodedPassword = passwordEncoder.encode(password);
 
-            kakaoUser = new User(email, encodedPassword);
+            kakaoUser = new User(nickname, encodedPassword);
             userRepository.save(kakaoUser);
         }
         return kakaoUser;
@@ -142,10 +141,7 @@ public class KakaoLoginService {
     private ResponseEntity forceLogin(User kakaoUser) {
         UserDetailsImpl userDetails = new UserDetailsImpl(kakaoUser);
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
-        System.out.println("user = " + userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
 
         // Token 생성
         final String token = JwtTokenUtils.generateJwtToken(userDetails);

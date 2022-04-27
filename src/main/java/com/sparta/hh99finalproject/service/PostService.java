@@ -10,7 +10,6 @@ import com.sparta.hh99finalproject.repository.PostRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import javafx.geometry.Pos;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -115,7 +114,6 @@ public class PostService {
         List<PostOtherOnePostResponseDto> postDtos = new ArrayList<>();
         for (int i = 0; i < Math.min(OTHER_POST_PAGEABLE_SIZE, otherPostsCount); i++) {
             int idx = (int)(Math.random() * otherPostsCount);
-            System.out.println("idx = " + idx);
             Pageable pageable = PageRequest.of(idx, 1);
             Page<Post> posts = postRepository
                 .findAllByUserNot(
