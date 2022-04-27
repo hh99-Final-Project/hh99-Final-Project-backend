@@ -25,9 +25,6 @@ public class PostController {
     @PostMapping("/api/posts")
     public void create(@RequestBody PostCreateRequestDto postCreateRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if (userDetails == null) {
-            new IllegalArgumentException("로그인한 사용자만 게시글을 저장할 수 있습니다.");
-        }
         postService.create(postCreateRequestDto, userDetails.getUser());
     }
 
