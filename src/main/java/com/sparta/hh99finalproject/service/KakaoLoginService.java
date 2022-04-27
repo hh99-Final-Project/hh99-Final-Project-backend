@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.hh99finalproject.config.KakaoConfigUtils;
 import com.sparta.hh99finalproject.domain.User;
+import com.sparta.hh99finalproject.dto.response.KakaoUserInfoResponseDto;
 import com.sparta.hh99finalproject.repository.UserRepository;
 import com.sparta.hh99finalproject.security.UserDetailsImpl;
 import com.sparta.hh99finalproject.security.jwt.JwtTokenUtils;
@@ -149,7 +150,6 @@ public class KakaoLoginService {
 
         return ResponseEntity.ok()
             .headers(headers)
-            .body(null);
-
+            .body(new KakaoUserInfoResponseDto(kakaoUser));
     }
 }
