@@ -9,11 +9,9 @@ import com.sparta.hh99finalproject.repository.PostRepository;
 import com.sparta.hh99finalproject.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Optional;
 import java.util.TimeZone;
 
 @Service
@@ -36,7 +34,6 @@ public class CommentService {
         String dateResult = getCurrentTime();
 
         return new CommentResponseDto(commentRequestDto, userDetails, dateResult);
-
 
     }
 
