@@ -6,6 +6,7 @@ import com.sparta.hh99finalproject.security.UserDetailsImpl;
 import com.sparta.hh99finalproject.service.ChatRoomService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,4 @@ public class ChatRoomController {
     public List<ChatRoomResponseDto> getChatRoom(@AuthenticationPrincipal UserDetailsImpl userDetails){
         return chatRoomService.getChatRoom(userDetails);
     }
-
-
-
 }

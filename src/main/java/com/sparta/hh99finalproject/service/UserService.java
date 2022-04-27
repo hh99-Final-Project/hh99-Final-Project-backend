@@ -18,9 +18,6 @@ public class UserService {
 
     //로그인한 유저 정보 가져오기
     public UserInfoDto isLogin(UserDetailsImpl userDetails) {
-        Long userId = userDetails.getUser().getId();
-        String nickname = userDetails.getUser().getNickname();
-
-        return new UserInfoDto(userId, nickname);
+        return new UserInfoDto(userDetails);
     }
 }

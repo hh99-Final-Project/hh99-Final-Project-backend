@@ -1,5 +1,6 @@
 package com.sparta.hh99finalproject.dto.response;
 
+import com.sparta.hh99finalproject.security.UserDetailsImpl;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,8 +11,10 @@ public class UserInfoDto {
     private Long userId;
     private String nickname;
 
-    public UserInfoDto(Long userId, String nickname) {
-        this.userId = userId;
-        this.nickname = nickname;
+    public UserInfoDto(UserDetailsImpl userDetails) {
+        this.userId = userDetails.getUser().getId();
+        this.nickname = userDetails.getUser().getNickname();
     }
+
+
 }

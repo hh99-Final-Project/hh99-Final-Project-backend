@@ -38,28 +38,16 @@ public class PostService {
 
     //게시글 1개 상세 조회
     public PostResponseDto getPost(Long postId, UserDetailsImpl userDetails) {
-        Optional<Post> post = postRepository.findById(postId);
-        Post post1 = post.get();
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new IllegalArgumentException("해당하는 게시글이 존재하지 않습니다.")
+        );
+        // 댓글의 삭제 가능 여부를 확인한 뒤 Dto로 변환
+        List<CommentDto> newCommentList = getCommentDtos(userDetails, post);
 
-        // 게시글 작성자
-        User user = postRepository.findById(postId).get().getUser();
-
-        List<CommentDto> newCommentList = new ArrayList<>();
-        List<Comment> commentLists = commentRepository.findAllByPost(post1);
-        for (Comment commentList : commentLists) {
-            if (commentList.getUser().getId().equals(userDetails.getUser().getId()) || userDetails.getUser().getId().equals(user.getId())) {
-                commentList.setShow(true);
-            } else {
-                commentList.setShow(false);
-            }
-            CommentDto commentDto = new CommentDto(commentList);
-            newCommentList.add(commentDto);
-        }
-
-
+        //Dto에 담아주기
         CommentListDto commentListDto = new CommentListDto(newCommentList);
 
-        return new PostResponseDto(post1, commentListDto);
+        return new PostResponseDto(post, commentListDto);
     }
 
     // 게시글(다이어리) 저장
@@ -123,5 +111,21 @@ public class PostService {
             postDtos.add(new PostOtherOnePostResponseDto(posts.getContent().get(0)));
         }
         return postDtos;
+    }
+
+    //댓글에 로그인한 유저와 비교해 삭제 가능 여부 판단해주는 메소드
+    private List<CommentDto> getCommentDtos(UserDetailsImpl userDetails, Post post) {
+        User user = post.getUser();
+
+        List<CommentDto> newCommentList = new ArrayList<>();
+        List<Comment> commentList = commentRepository.findAllByPost(post);
+        for (Comment comment: commentList) {
+            if (comment.getUser().getId().equals(userDetails.getUser().getId()) || userDetails.getUser().getId().equals(user.getId())) {
+                comment.setShow(true);
+            }
+            CommentDto commentDto = new CommentDto(comment);
+            newCommentList.add(commentDto);
+        }
+        return newCommentList;
     }
 }
