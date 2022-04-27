@@ -24,4 +24,14 @@ public class ChatRoom {
 
     @OneToMany(mappedBy = "chatRoom")
     private List<ChatMessage> chatMessages = new ArrayList<>();
+
+    private int roomHashCode;
+
+    @OneToMany(mappedBy = "chatRoom")
+    private List<ChatRoomUser> chatRoomUsers = new ArrayList<>();
+
+
+    public ChatRoom(int roomUsers) {
+        this.roomHashCode=roomUsers;
+    }
 }

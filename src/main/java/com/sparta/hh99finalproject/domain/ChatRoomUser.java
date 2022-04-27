@@ -38,4 +38,6 @@ public class ChatRoomUser {
         this.name = anotherUser.getNickname();
         this.chatRoom = room;
     }
+
+
 }
