@@ -69,13 +69,11 @@ public class PostService {
     }
 
     // 게시글(다이어리) 삭제
-
     public void delete(Long postId, User user) {
         Post post = postRepository.findById(postId).orElseThrow(
             () -> new IllegalArgumentException("존재하지 않는 게시글입니다.")
         );
 
-        // toDO: 게시글 작성자만 게시글을 지울 수 있다.
         if (!user.getId().equals(post.getUser().getId())) {
             throw new IllegalArgumentException("게시글 작성자 만이 게시글을 삭제할 수 있습니다.");
         }
@@ -83,44 +81,41 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    // 나의 게시글 리스트 조회
+    // 나의 게시글 리스트 조회 (마이 페이지)
     public List<PostMyPageResponseDto> findOneMyPage(Integer pageId, User user) {
 
         // paging 처리 해야 하는 수 보다 게시글의 수가 적을 경우 고려
         int postSize = Math.min(postRepository.findByUser(user).size(), MY_POST_PAGEABLE_SIZE);
         Pageable pageable = PageRequest.of(pageId, postSize, Sort.by((Direction.DESC), SORT_PROPERTIES));
 
+        // 내가 쓴 게시글 페이징을 이용해서 들고오기
         Page<Post> pagedPosts = postRepository.findByUser(user, pageable);
-        List<PostMyPageResponseDto> postDtos = new ArrayList<>();
 
-        for (Post pagedPost : pagedPosts) {
-            postDtos.add(new PostMyPageResponseDto(pagedPost));
-        }
-
-        return postDtos;
+        // 들고온 게시글을 dto로 변환해서 반환
+        return convertPostsToPostDtos(pagedPosts);
     }
 
-    public List<PostOtherOnePostResponseDto> findOneOtherPage(User user) {
+
+    // 남의 게시글 훔쳐보기 (1개만)
+    public PostOtherOnePostResponseDto findOneOtherPage(User user) {
 
         long otherPostsCount = postRepository.countByUserNot(user);
-        if (otherPostsCount >= 1) {
-            return getRandomOtherPosts(user, otherPostsCount);
+
+        if (otherPostsCount < 1) {
+            throw new IllegalArgumentException("남이 쓴 게시글이 존재하지 않습니다.");
         }
 
-        return new ArrayList<>();
+        List<Post> otherPosts = postRepository.findAllByUserNot(user);
+
+        int idx = (int)(Math.random() * otherPosts.size());
+        Post post = otherPosts.get(idx);
+        return new PostOtherOnePostResponseDto(post);
     }
 
-    private List<PostOtherOnePostResponseDto> getRandomOtherPosts(User user, long otherPostsCount) {
-        List<PostOtherOnePostResponseDto> postDtos = new ArrayList<>();
-        for (int i = 0; i < Math.min(OTHER_POST_PAGEABLE_SIZE, otherPostsCount); i++) {
-            int idx = (int)(Math.random() * otherPostsCount);
-            Pageable pageable = PageRequest.of(idx, 1);
-            Page<Post> posts = postRepository
-                .findAllByUserNot(
-                    user,
-                    pageable
-                );
-            postDtos.add(new PostOtherOnePostResponseDto(posts.getContent().get(0)));
+    private List<PostMyPageResponseDto> convertPostsToPostDtos(Page<Post> pagedPosts) {
+        List<PostMyPageResponseDto> postDtos = new ArrayList<>();
+        for (Post pagedPost : pagedPosts) {
+            postDtos.add(new PostMyPageResponseDto(pagedPost));
         }
         return postDtos;
     }
