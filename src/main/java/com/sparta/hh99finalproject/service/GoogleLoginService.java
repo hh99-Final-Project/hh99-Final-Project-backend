@@ -82,6 +82,10 @@ public class GoogleLoginService {
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        // toDo: 랜덤 닉네임 추가
+        String nickname = "닉네임 넣어줄 예정이에요";
+        googleUser.createNickname(nickname);
+
         // Token 생성
         final String token = JwtTokenUtils.generateJwtToken(userDetails);
         System.out.println("token = " + token);
@@ -91,7 +95,7 @@ public class GoogleLoginService {
 
         return ResponseEntity.ok()
             .headers(headers)
-            .body(null);
+            .body(googleUser);
     }
 
     private User registerKakaoUserIfNeeded(String email) {

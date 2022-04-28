@@ -34,4 +34,7 @@ public class User {
         this.password = password;
     }
 
+    public void createNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }

@@ -5,7 +5,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.hh99finalproject.config.KakaoConfigUtils;
 import com.sparta.hh99finalproject.domain.User;
-import com.sparta.hh99finalproject.dto.response.KakaoUserInfoResponseDto;
+import com.sparta.hh99finalproject.dto.SocialLoginRequestDto;
+import com.sparta.hh99finalproject.dto.response.SocialLoginResponseDto;
 import com.sparta.hh99finalproject.repository.UserRepository;
 import com.sparta.hh99finalproject.security.UserDetailsImpl;
 import com.sparta.hh99finalproject.security.jwt.JwtTokenUtils;
@@ -141,6 +142,10 @@ public class KakaoLoginService {
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        // toDo: random Nickname 추가해 줘야함
+        String nickname = "닉네임 넣어줄 예정이에요";
+        kakaoUser.createNickname(nickname);
+
         // Token 생성
         final String token = JwtTokenUtils.generateJwtToken(userDetails);
         System.out.println("token = " + token);
@@ -150,6 +155,6 @@ public class KakaoLoginService {
 
         return ResponseEntity.ok()
             .headers(headers)
-            .body(new KakaoUserInfoResponseDto(kakaoUser));
+            .body(new SocialLoginResponseDto(kakaoUser));
     }
 }
