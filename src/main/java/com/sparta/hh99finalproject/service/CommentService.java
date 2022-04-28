@@ -42,7 +42,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 ()-> new IllegalArgumentException("해당하는 댓글이 존재하지 않습니다.")
         );
-        if(!comment.getUser().equals(userDetails.getUser()))
+        if (!comment.getUser().equals(userDetails.getUser()))
             throw new IllegalArgumentException("글을 작성한 유저만 삭제할 수 있습니다.");
         commentRepository.deleteById(commentId);
     }

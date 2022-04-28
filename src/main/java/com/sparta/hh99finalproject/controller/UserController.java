@@ -28,4 +28,10 @@ public class UserController {
     public boolean isDuplicated(@RequestBody NicknameCheckRequestDto nicknameCheckRequestDto) {
         return userService.isDuplicated(nicknameCheckRequestDto.getNickname());
     }
+
+    @GetMapping("/api/test")
+    public String test(){
+        System.out.println("요청왔음");
+        return "정보가 잘 가나요?";
+    }
 }

@@ -111,15 +111,15 @@ public class PostService {
     private List<CommentDto> getCommentDtos(UserDetailsImpl userDetails, Post post) {
         User user = post.getUser();
 
-        List<CommentDto> newCommentList = new ArrayList<>();
-        List<Comment> commentList = commentRepository.findAllByPost(post);
-        for (Comment comment: commentList) {
+        List<CommentDto> newComments = new ArrayList<>();
+        List<Comment> comments = commentRepository.findAllByPost(post);
+        for (Comment comment: comments) {
             if (comment.getUser().getId().equals(userDetails.getUser().getId()) || userDetails.getUser().getId().equals(user.getId())) {
                 comment.setShow(true);
             }
             CommentDto commentDto = new CommentDto(comment);
-            newCommentList.add(commentDto);
+            newComments.add(commentDto);
         }
-        return newCommentList;
+        return newComments;
     }
 }

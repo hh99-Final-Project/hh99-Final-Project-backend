@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class GoogleLoginController {
 
-    private final GoogleConfigUtils configUtils;
     private final GoogleLoginService googleLoginService;
 
     @GetMapping(value = "/login")
