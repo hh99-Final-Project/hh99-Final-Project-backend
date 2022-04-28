@@ -22,14 +22,16 @@ public class ChatRoomController {
     private final ChatRoomService chatRoomService;
 
     //방생성
-    @PostMapping("/rooms")
-    public void createChatRoom(@RequestBody ChatRoomUserRequestDto requestDto,@AuthenticationPrincipal UserDetailsImpl userDetails){
-        chatRoomService.creatChatRoom(requestDto, userDetails);
+    @PostMapping ("/rooms")
+    public void createChatRoom(
+            @RequestBody ChatRoomUserRequestDto requestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        chatRoomService.createChatRoom(requestDto, userDetails);
     }
 
     //내가 가진 채팅방 조회
-    @GetMapping("/rooms")
-    public List<ChatRoomResponseDto> getChatRoom(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    @GetMapping ("/rooms")
+    public List<ChatRoomResponseDto> getChatRoom (@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return chatRoomService.getChatRoom(userDetails);
     }
 }

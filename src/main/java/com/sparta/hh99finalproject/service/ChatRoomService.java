@@ -27,14 +27,16 @@ public class ChatRoomService {
     private final ChatRoomUserRepository chatRoomUserRepository;
     private final ChatMessageRepository chatMessageRepository;
 
-    public void creatChatRoom(ChatRoomUserRequestDto requestDto, UserDetailsImpl userDetails) {
+    public void createChatRoom (
+            ChatRoomUserRequestDto requestDto,
+            UserDetailsImpl userDetails) {
 
         //상대방 방도 생성>상대방 찾기
 
         User anotherUser = userRepository.findById(requestDto.getUserId()).orElseThrow(
                 () -> new IllegalArgumentException("상대방이 존재하지 않습니다.")
         );
-//
+
         //roomHashCode 만들기
         int roomHashCode = createRoomHashCode(userDetails, anotherUser);
 
@@ -56,14 +58,21 @@ public class ChatRoomService {
     }
 
     //for 둘 다 있는 방 판단
-    public int createRoomHashCode(UserDetailsImpl userDetails, User anotherUser) {
+    public int createRoomHashCode(
+            UserDetailsImpl userDetails,
+            User anotherUser) {
+
         Long userId = userDetails.getUser().getId();
         Long anotherId = anotherUser.getId();
         return userId > anotherId ? Objects.hash(userId, anotherId) : Objects.hash(anotherId, userId);
     }
 
     //이미 방이 존재할 때
-    public void existRoom(int roomUsers, UserDetailsImpl userDetails, User anotherUser) {
+    public void existRoom(
+            int roomUsers,
+            UserDetailsImpl userDetails,
+            User anotherUser) {
+
         ChatRoom chatRoom = chatRoomRepository.findByRoomHashCode(roomUsers).orElse(null);
 
         if (chatRoom != null) {
@@ -75,9 +84,8 @@ public class ChatRoomService {
                 if (chatRoomUser.get(0).getUser().equals(userDetails.getUser())) {
                     ChatRoomUser user = new ChatRoomUser(anotherUser, userDetails.getUser(), chatRoom);
                     chatRoomUserRepository.save(user);
-                }
-                //상대방만 있을 때
-                else {
+                } else {
+                    //상대방만 있을 때
                     ChatRoomUser user = new ChatRoomUser(userDetails.getUser(), anotherUser, chatRoom);
                     chatRoomUserRepository.save(user);
                 }
@@ -91,25 +99,24 @@ public class ChatRoomService {
         //user로 챗룸 유저를 찾고>>챗룸 유저에서 채팅방을 찾는다
         //마자
         //마지막나온 메시지 ,내용 ,시간
-        List<ChatRoomResponseDto> responseDtoList = new ArrayList<>();
-        List<ChatRoomUser> chatRoomUserList = chatRoomUserRepository.findAllByUser(userDetails.getUser());
+        List<ChatRoomResponseDto> responseDtos = new ArrayList<>();
+        List<ChatRoomUser> chatRoomUsers = chatRoomUserRepository.findAllByUser(userDetails.getUser());
 
 
-        for (ChatRoomUser chatRoomUser : chatRoomUserList) {
+        for (ChatRoomUser chatRoomUser : chatRoomUsers) {
 
             ChatRoomResponseDto responseDto = createChatRoomDto(chatRoomUser);
-            responseDtoList.add(responseDto);
+            responseDtos.add(responseDto);
 
             //정렬
-            responseDtoList.sort(Collections.reverseOrder());
-
+            responseDtos.sort(Collections.reverseOrder());
         }
-        return responseDtoList;
+        return responseDtos;
     }
 
 
     public ChatRoomResponseDto createChatRoomDto(ChatRoomUser chatRoomUser) {
-        String roomname = chatRoomUser.getName();
+        String roomName = chatRoomUser.getName();
         Long roomId = chatRoomUser.getChatRoom().getId();
         String lastMessage;
         LocalDateTime lastTime;
@@ -123,8 +130,7 @@ public class ChatRoomService {
             lastMessage = Messages.get(0).getContent();
             lastTime = Messages.get(0).getCreatedAt();
         }
-        return new ChatRoomResponseDto(roomname, roomId, lastMessage, lastTime);
-
+        return new ChatRoomResponseDto(roomName, roomId, lastMessage, lastTime);
     }
 
 
