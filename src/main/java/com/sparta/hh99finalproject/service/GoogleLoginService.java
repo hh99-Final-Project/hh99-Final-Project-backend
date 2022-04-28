@@ -62,10 +62,10 @@ public class GoogleLoginService {
 
     // 얻은 code를 이용하여 token 요청
     // token을 이용하여 사용자 정보 획득
-    public ResponseEntity login(String authCode) {
+    public ResponseEntity login(String jwtToken) {
         // HTTP 통신을 위해 RestTemplate 활용
         try {
-            String jwtToken = getAccessToken(authCode);
+//            String jwtToken = getAccessToken(authCode);
             System.out.println("jwtToken = " + jwtToken);
             String email = getGoogleUserInfo(jwtToken);
             User googleUser = registerKakaoUserIfNeeded(email);
