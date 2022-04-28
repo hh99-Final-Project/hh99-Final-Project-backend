@@ -51,10 +51,10 @@ public class KakaoLoginService {
     }
 
 //    public ResponseEntity<KakaoLoginDto> login(String authCode) {
-    public ResponseEntity login(String authCode) {
+    public ResponseEntity login(String jwtToken) {
         // HTTP 통신을 위해 RestTemplate 활용
         try {
-            String jwtToken = getAccessToken(authCode);
+//            String jwtToken = getAccessToken(authCode);
             System.out.println("jwtToken = " + jwtToken);
             // 2. "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
             String nickname = getKakaoUserInfo(jwtToken);
