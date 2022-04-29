@@ -13,7 +13,4 @@ PR test4
 
 develop 브랜치 생성
 
-develop -> feature/test2로 분기
-
-develop -> feature/test1 분기
 
