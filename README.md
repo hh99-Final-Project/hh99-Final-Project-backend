@@ -13,4 +13,8 @@ PR test4
 
 develop 브랜치 생성
 
+<<<<<<< HEAD
 test
+=======
+
+>>>>>>> bf0a74fe4c51e415a257003c9e292e627c73294d
