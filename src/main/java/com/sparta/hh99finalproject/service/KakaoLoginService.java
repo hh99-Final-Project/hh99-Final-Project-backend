@@ -152,7 +152,6 @@ public class KakaoLoginService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("token",token);
-
         return ResponseEntity.ok()
             .headers(headers)
             .body(new SocialLoginResponseDto(kakaoUser));
