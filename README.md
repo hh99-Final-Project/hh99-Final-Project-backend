@@ -12,3 +12,5 @@ PR test4
 커밋테스트 1호기
 
 develop 브랜치 생성
+
+develop -> feature/test2로 분기
