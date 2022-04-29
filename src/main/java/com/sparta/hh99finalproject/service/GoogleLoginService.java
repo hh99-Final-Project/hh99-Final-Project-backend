@@ -11,6 +11,7 @@ import com.sparta.hh99finalproject.domain.User;
 import com.sparta.hh99finalproject.dto.request.GoogleLoginDto;
 import com.sparta.hh99finalproject.dto.request.GoogleLoginRequest;
 import com.sparta.hh99finalproject.dto.response.GoogleLoginResponse;
+import com.sparta.hh99finalproject.dto.response.SocialLoginResponseDto;
 import com.sparta.hh99finalproject.repository.UserRepository;
 import com.sparta.hh99finalproject.security.jwt.JwtTokenUtils;
 import java.net.URI;
@@ -91,11 +92,11 @@ public class GoogleLoginService {
         System.out.println("token = " + token);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("token",token);
+        headers.set("Authorization","Bearer "+token);
 
         return ResponseEntity.ok()
             .headers(headers)
-            .body(googleUser);
+            .body(new SocialLoginResponseDto(googleUser));
     }
 
     private User registerKakaoUserIfNeeded(String email) {
